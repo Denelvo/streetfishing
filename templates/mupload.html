@@ -6,7 +6,7 @@
     {% if messages %}
 <ul class=flashes>
     {% for message in messages %}
-    <li>{{ message }}</li>
+    <li><h1>{{ message }}</h1></li>
     {% endfor %}
 </ul>
 {% endif %}
@@ -15,7 +15,7 @@
 <p>   </p>
 <p>   </p>
 
-<h4>Selecteer je foto's</h4>
+<h4>Selecteer AL je foto's</h4>
 <form method="post" action="/" enctype="multipart/form-data">
     <dl>
         <p>Teamnummer <input type = "text" name = "team_number" size = "4"/></p>
