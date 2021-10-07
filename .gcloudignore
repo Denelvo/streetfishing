@@ -12,7 +12,6 @@
 # below:
 .git
 .gitignore
-requirements.txt
 # Python pycache:
 __pycache__/
 # Ignored by the build system
