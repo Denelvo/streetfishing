@@ -21,15 +21,12 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # Allowed extension you can set your own
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'tiff', 'eps', 'raw'])
 
-
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 @app.route('/')
 def upload_form():
     return render_template('mupload.html')
-
 
 @app.route('/', methods=['POST'])
 def upload_file():
