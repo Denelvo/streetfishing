@@ -1,0 +1,1 @@
+~/Downloads/google-cloud-sdk/bin/gcloud app deploy

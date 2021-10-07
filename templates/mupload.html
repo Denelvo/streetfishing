@@ -1,6 +1,6 @@
 <!doctype html>
 <title>Upload je vangstfoto's hier!</title>
-<h2>Selecteer je foto's</h2>
+
 <p>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -12,6 +12,10 @@
 {% endif %}
 {% endwith %}
 </p>
+<p>   </p>
+<p>   </p>
+
+<h2>Selecteer je foto's</h2>
 <form method="post" action="/" enctype="multipart/form-data">
     <dl>
         <p>Teamnummer <input type = "text" name = "team_number" size = "4"/></p>

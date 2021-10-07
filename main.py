@@ -1,7 +1,6 @@
 import os
 from flask import Flask, flash, request, redirect, render_template
 from werkzeug.utils import secure_filename
-from pprint import pprint
 
 app=Flask(__name__)
 
@@ -34,16 +33,17 @@ def upload_file():
     if request.method == 'POST':
 
         if 'files[]' not in request.files:
-            flash('No file part')
+            flash('Geen foto\'s geselecteerd. Toch niet geblankt? ')
             return redirect(request.url)
 
         files = request.files.getlist('files[]')
+        num = len(files)
         for file in files:
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], request.form.get('team_number') + '_' + request.form.get('team_name') + '_' + filename))
 
-        flash('Je foto\'s zijn opgeladen! Bedankt ' + request.form.get('team_name') + '.')
+        flash(str(num) + ' foto\'s zijn opgeladen! Bedankt ' + request.form.get('team_name') + '.')
         return redirect('/')
 
 
