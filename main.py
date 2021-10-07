@@ -47,7 +47,7 @@ def upload_file():
                 file.save(localfilename)
 
                 bucket = client.get_bucket('streetfishing.appspot.com')
-                blob2 = bucket.blob(request.form.get('team_number') + '/' + filename)
+                blob2 = bucket.blob(request.form.get('team_number') + '_' + request.form.get('team_name') + '/' + filename)
                 blob2.upload_from_filename(filename=localfilename)
                 os.remove(localfilename)
 
