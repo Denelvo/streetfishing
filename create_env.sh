@@ -1,0 +1,1 @@
+conda create -n sf --file requirements.txt
