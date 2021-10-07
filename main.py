@@ -1,6 +1,7 @@
 import os
 from flask import Flask, flash, request, redirect, render_template
 from werkzeug.utils import secure_filename
+from google.cloud import storage
 
 app=Flask(__name__)
 
@@ -36,12 +37,20 @@ def upload_file():
             flash('Geen foto\'s geselecteerd. Toch niet geblankt? ')
             return redirect(request.url)
 
+        client = storage.Client()
         files = request.files.getlist('files[]')
         num = len(files)
         for file in files:
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], request.form.get('team_number') + '_' + request.form.get('team_name') + '_' + filename))
+                localfilename = os.path.join(app.config['UPLOAD_FOLDER'], request.form.get('team_number') + '_' + request.form.get('team_name') + '_' + filename)
+                file.save(localfilename)
+
+                bucket = client.get_bucket('streetfishing.appspot.com')
+                blob2 = bucket.blob(request.form.get('team_number') + '/' + filename)
+                blob2.upload_from_filename(filename=localfilename)
+                os.remove(localfilename)
+
 
         flash(str(num) + ' foto\'s zijn opgeladen! Bedankt ' + request.form.get('team_name') + '.')
         return redirect('/')
