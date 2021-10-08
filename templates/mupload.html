@@ -4,7 +4,7 @@
 <p>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
-< class=flashes>
+<ul class=flashes>
     {% for message in messages %}
     <li><h2>{{ message }}</h2></li>
     {% endfor %}
