@@ -1,0 +1,13 @@
+<!doctype html>
+<title>Opgeladen vangstfoto's</title>
+
+
+<h4>Foto's</h4>
+
+<table>
+    {% for u in urls %}
+    <tr>
+        <td><img src="{{ u }}"></td>
+    </tr>
+    {% endfor %}
+</table>

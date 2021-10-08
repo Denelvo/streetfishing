@@ -5,7 +5,6 @@ from google.cloud import storage
 
 app=Flask(__name__)
 
-app.secret_key = "secret key"
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 # Get current path
@@ -18,18 +17,17 @@ if not os.path.isdir(UPLOAD_FOLDER):
     os.mkdir(UPLOAD_FOLDER)
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
 # Allowed extension you can set your own
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'tiff', 'eps', 'raw'])
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/')
+@app.route('/') # First visit, show form
 def upload_form():
     return render_template('mupload.html')
 
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['POST'])   # Pics being uploaded
 def upload_file():
     if request.method == 'POST':
 
@@ -49,11 +47,28 @@ def upload_file():
                 bucket = client.get_bucket('streetfishing.appspot.com')
                 blob2 = bucket.blob(request.form.get('team_number') + '_' + request.form.get('team_name') + '/' + filename)
                 blob2.upload_from_filename(filename=localfilename)
+                blob2.make_public()
+                blobfilename = blob2.public_url
                 os.remove(localfilename)
-
+                #flash('URL: '+blobfilename)
 
         flash(str(num) + ' foto\'s zijn opgeladen! Bedankt ' + request.form.get('team_name') + '.')
         return redirect('/')
+
+@app.route('/gallery') # Results: pic gallery
+def display_gallery():
+    urls=[]
+    client = storage.Client()
+    bucket = client.get_bucket('streetfishing.appspot.com')
+    blobs = list(client.list_blobs(bucket))
+    for blob in client.list_blobs('streetfishing.appspot.com'):
+        st = str(blob)
+        st = st.split(',')[1].strip()
+        url = 'https://storage.googleapis.com/streetfishing.appspot.com/' + st
+        urls.append(url)
+    urls.sort()
+
+    return render_template('gallery.html', urls = urls)
 
 
 if __name__ == "__main__":
