@@ -69,7 +69,7 @@ def display_gallery():
     urls.sort()
 
     return render_template('gallery.html', urls = urls)
-
+    # https://stackoverflow.com/questions/25373154/how-to-iterate-through-a-list-of-dictionaries-in-jinja-template
 
 if __name__ == "__main__":
     app.run(host='127.0.0.1',port=5000,debug=False,threaded=True)
